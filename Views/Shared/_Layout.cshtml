@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Boutique</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JavaScript Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    @if (User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link text-primary" href="/Admin/Dashboard">Admin Dashboard</a>
+    </li>
+}
+
+    // Orders Analytics Chart
+    const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+    const ordersChart = new Chart(ordersCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            datasets: [
+                {
+                    label: 'Offline Orders',
+                    data: [10, 20, 30, 40, 50, 60, 70],
+                    borderColor: 'blue',
+                    fill: false,
+                },
+                {
+                    label: 'Online Orders',
+                    data: [20, 30, 50, 70, 60, 80, 90],
+                    borderColor: 'orange',
+                    fill: false,
+                },
+            ],
+        },
+    });
+
+    // Earnings Chart
+    const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+    const earningsChart = new Chart(earningsCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Offline', 'Online', 'Trade'],
+            datasets: [
+                {
+                    data: [40, 35, 25],
+                    backgroundColor: ['blue', 'orange', 'green'],
+                },
+            ],
+        },
+    });
+</script>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold text-primary" href="/" style="font-size: 1.8rem; font-family: 'Poppins', sans-serif;">
+                mekog.
+            </a>
+
+            <!-- Burger Menu -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-semibold px-3" href="/">Home</a>
+                    </li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-semibold px-3" href="/Account/Shop">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-semibold px-3" href="/Home/AboutUs">About Us</a>
+                        </li>
+                    }
+
+                </ul>
+
+                <!-- Actions Section -->
+                <div class="d-flex align-items-center">
+                    <!-- Dashboard Button (Admin Only) -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Admin/Dashboard" class="btn btn-outline-primary fw-semibold me-3 rounded-pill">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    }
+
+                    <!-- Search Bar -->
+
+
+                    <!-- Cart Button -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="/Produits/Panier" class="btn btn-primary position-relative rounded-pill px-4">
+                            <i class="bi bi-cart me-2"></i> Panier
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark shadow-sm">
+                                @if (ViewData["CartCount"] != null)
+                                {
+                                    @ViewData["CartCount"]
+                                }
+                            </span>
+                        </a>
+                    }
+
+                    <!-- Authentication Links -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline ms-3">
+                            <button type="submit" class="btn btn-link text-danger fw-medium">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-link text-dark fw-medium ms-3" href="/Account/Login">Login</a>
+                        <a class="btn btn-outline-primary rounded-pill ms-2 px-4 fw-medium" href="/Account/Register">Register</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<style>
+.nav-link:hover, .dropdown-item:hover {
+    color: #0056b3;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #004494;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+}
+
+
+</style>
+
+
+    <!-- Content -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <!-- Footer -->
+<!-- Footer -->
+<footer class="footer-gray border-top py-5">
+    <div class="container">
+        <!-- Features Section -->
+        <div class="row text-center mb-4">
+            <div class="col-md-3">
+                <i class="bi bi-truck fs-1 text-danger"></i>
+                <h6 class="mt-2">100% Genuine</h6>
+                <p class="text-muted">For all orders over $99</p>
+            </div>
+            <div class="col-md-3">
+                <i class="bi bi-arrow-counterclockwise fs-1 text-danger"></i>
+                <h6 class="mt-2">90 Days Return</h6>
+                <p class="text-muted">If goods have problems</p>
+            </div>
+            <div class="col-md-3">
+                <i class="bi bi-shield-check fs-1 text-danger"></i>
+                <h6 class="mt-2">Secure Payment</h6>
+                <p class="text-muted">100% secure payment</p>
+            </div>
+            <div class="col-md-3">
+                <i class="bi bi-headset fs-1 text-danger"></i>
+                <h6 class="mt-2">24/7 Support</h6>
+                <p class="text-muted">Ready to support customers</p>
+            </div>
+        </div>
+
+        <!-- Contact Info and Links -->
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="text-danger">Call To Order</h5>
+                <p class="fw-bold">(084) 859-481-3614</p>
+                <p class="text-muted">
+                    There are many variations of passages of Lorem Ipsum available.
+                </p>
+                <p><strong>Address:</strong> 139 Brook Drive, South Richmond Hill, NY</p>
+                <p><strong>Email:</strong> <a href="mailto:mekog@support.com" class="text-danger">mekog@support.com</a></p>
+                <div>
+                    <a href="#" class="text-dark me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-dark me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-dark me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-dark"><i class="bi bi-google"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h6>Company Info</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-muted text-decoration-none">About Us</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Contact Us</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Blogs</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Become A Vendor</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Find A Store</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <h6>Let Us Help You</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-muted text-decoration-none">Orders</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Downloads</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Account Details</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Lost Password</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <h6>Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-muted text-decoration-none">Special Offers</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Gift Cards</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">Privacy Policy</a></li>
+                    <li><a href="#" class="text-muted text-decoration-none">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6>Sign Up For Newsletter</h6>
+                <p>Subscribe to the weekly newsletter for all the latest updates.</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control me-2" placeholder="Your email">
+                    <button class="btn btn-danger">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="row mt-4 text-center">
+            <div class="col">
+                <p class="text-muted mb-0">&copy; 2024 Mekog. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
